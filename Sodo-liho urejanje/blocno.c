@@ -8,7 +8,7 @@
 #include <stddef.h>
 
 #define NTHREADS 4
-#define N 21
+#define N 20
 #define __PRINT__
 #define PREPREKA pthread_barrier_wait(&prepreka);
 
@@ -161,25 +161,21 @@ void* sodo_sodi_prehod(int* id){
     int st_elementov = doloci_st_elementov(id);
 
     // Sodi obhod.
-    for (int i = 0; i < (st_elementov); i+=2)
-    {
-        int j = (*id * st_elementov) + i;
-        if((j + 1) < N){
-            primerjaj_in_zamenjaj(&pseznam[j], &pseznam[j+1], &lokalno_urejeno[*id], id, &j);
+    for (int i = (*id * st_elementov); i < st_elementov * ((*id) + 1); i+=2){
+        if((i + 1) < N){
+            primerjaj_in_zamenjaj(&pseznam[i], &pseznam[i+1], &lokalno_urejeno[*id], id, &i);
         }    
     }
-
     return NULL;
 }
 
 void* sodo_lihi_prehod(int* id) {
     int st_elementov = doloci_st_elementov(id);
 
-
-    for (int i = 1; i < st_elementov; i += 2) {
-        int j = (*id * (st_elementov)) + i;
-        if ((j + 1) < N) {
-            primerjaj_in_zamenjaj(&pseznam[j], &pseznam[j + 1], &lokalno_urejeno[*id], id, &j);
+    // Lihi obhod.
+    for (int i = (*id * (st_elementov)) + 1; i < st_elementov * ((*id) + 1); i += 2) {
+        if ((i + 1) < N) {
+            primerjaj_in_zamenjaj(&pseznam[i], &pseznam[i + 1], &lokalno_urejeno[*id], id, &i);
         }
     }
 
