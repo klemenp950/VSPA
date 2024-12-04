@@ -8,7 +8,7 @@
 #include <stddef.h>
 
 #define NTHREADS 4
-#define N 20
+#define N 21
 #define __PRINT__
 #define PREPREKA pthread_barrier_wait(&prepreka);
 
@@ -185,21 +185,15 @@ void* sodo_lihi_prehod(int* id) {
 void* liho_sodi_prehod(int* id){
     int st_elementov = doloci_st_elementov(id);
     if((*id % 2) == 0){  // Nit je soda
-        // printf("SEM SODA NIT %d, I: %d, ST_ELEMENTOV: %d\n", *id, (N/NTHREADS) * (*id), st_elementov);
-        for (int i = 0; i < st_elementov; i+=2)
-        {   
-            int j = ((N/NTHREADS) * (*id)) + i;
-            if((j + 1) <= ((st_elementov * ((*id) + 1)) + 1) && (j + 1) < N){
-                primerjaj_in_zamenjaj(&pseznam[j], &pseznam[j+1], &lokalno_urejeno[*id], id, &j);
+        for (int i = ((N/NTHREADS) * (*id)); i < ((st_elementov * ((*id) + 1)) + 1); i+=2){   
+            if((i + 1) < N){
+                primerjaj_in_zamenjaj(&pseznam[i], &pseznam[i+1], &lokalno_urejeno[*id], id, &i);
             }
         }
     } else {  //Nit je liha
-        // printf("SEM LIHA NIT %d, I: %d, ST_ELEMENTOV: %d\n", *id, ((N/NTHREADS) * (*id)) + 1, st_elementov);
-        for (int i = 1; i < (st_elementov); i+=2)
-        {   
-            int j = ((N/NTHREADS) * (*id)) + i;
-            if((i + 1) <= (st_elementov * ((*id) + 1)) && (j + 1) < N){
-                primerjaj_in_zamenjaj(&pseznam[j], &pseznam[j+1], &lokalno_urejeno[*id], id, &j);
+        for (int i = ((N/NTHREADS) * (*id)) + 1; i < (st_elementov * ((*id) + 1)); i+=2){   
+            if((i + 1) < N){
+                primerjaj_in_zamenjaj(&pseznam[i], &pseznam[i+1], &lokalno_urejeno[*id], id, &i);
             }
         }
     }
@@ -209,21 +203,15 @@ void* liho_sodi_prehod(int* id){
 void* liho_lihi_prehod(int* id){
     int st_elementov = doloci_st_elementov(id);
     if((*id % 2) == 0){  // Nit je soda
-        // printf("SEM SODA NIT %d, I: %d, ST_ELEMENTOV: %d\n", *id, ((N/NTHREADS) * (*id)) + 1, st_elementov);
-        for (int i = 1; i < (st_elementov); i+=2)
-        {   
-            int j = ((N/NTHREADS) * (*id)) + i;
-            if((j + 1) <= (st_elementov * ((*id) + 1)) && (j + 1) < N){
-                primerjaj_in_zamenjaj(&pseznam[j], &pseznam[j+1], &lokalno_urejeno[*id], id, &j);
+        for (int i = ((N/NTHREADS) * (*id)) + 1; i < (st_elementov * ((*id) + 1)); i+=2){   
+            if((i + 1) < N){
+                primerjaj_in_zamenjaj(&pseznam[i], &pseznam[i+1], &lokalno_urejeno[*id], id, &i);
             }
         }
     } else {  //Nit je liha
-        // printf("SEM LIHA NIT %d, I: %d, ST_ELEMENTOV: %d\n", *id, ((N/NTHREADS) * (*id)), st_elementov);
-        for (int i = 0; i < st_elementov; i+=2)
-        {
-            int j = ((N/NTHREADS) * (*id)) + i;
-            if((j + 1) <= ((st_elementov * ((*id) + 1)) + 1) && (j + 1) < N){
-                primerjaj_in_zamenjaj(&pseznam[j], &pseznam[j+1], &lokalno_urejeno[*id], id, &j);
+        for (int i = ((N/NTHREADS) * (*id)); i < ((st_elementov * ((*id) + 1)) + 1); i+=2){
+            if((i + 1) < N){
+                primerjaj_in_zamenjaj(&pseznam[i], &pseznam[i+1], &lokalno_urejeno[*id], id, &i);
             }
         }
     }
