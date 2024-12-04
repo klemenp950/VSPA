@@ -67,15 +67,21 @@ int main(){
 }
 
 void* primerjaj_in_zamenjaj(int* a, int* b, bool* lokalno_urejeno, int* nit, int *index){
-    // printf("Thread %d: Passing j = %d to primerjaj_in_zamenjaj\n", *nit, *index);
+#ifdef __PRINT_DEBUG__
+    printf("Thread %d: Passing j = %d to primerjaj_in_zamenjaj\n", *nit, *index);
+#endif
     if(*a > *b){
         int temp = *a;
         *a = *b; 
         *b = temp;
         *lokalno_urejeno = false;
+#ifdef __PRINT__
         printf("Menjava elementov %d (index %d) in %d (index %d) (Nit %d)\n", *a, (*index) + 1, *b, *index, *nit);
+#endif
     } else {
-        // printf("Primerjava elementov %d (index %d) in %d (index %d) (Nit %d)\n", *a, (*index) + 1, *b, *index, *nit);
+#ifdef __PRINT__DEBUG__
+        printf("Primerjava elementov %d (index %d) in %d (index %d) (Nit %d)\n", *a, (*index) + 1, *b, *index, *nit);
+#endif
     }
 }
 
@@ -109,8 +115,6 @@ void* uredi_seznam(void* arg){
             }
 #endif
         } else {
-            // printf("MODE: %d\n", mode);
-            // printf("THREDA NUMBER %d\n", id);
             // ---------- SODI PREHOD ----------
             liho_sodi_prehod(&id);
             PREPREKA
@@ -231,14 +235,11 @@ void* liho_lihi_prehod(int* id){
 }
 
 int doloci_st_elementov(int* id) {
-    int st_elementov;
     if (*id == (NTHREADS - 1)) {
-        st_elementov = N / NTHREADS + N % NTHREADS;
+        return N / NTHREADS + N % NTHREADS;
     } else {
-        st_elementov = N / NTHREADS;
+        return N / NTHREADS;
     }
-    // printf("ŠTEVILO ELEMENTOV ZA NIT %d: %d\n", *id, st_elementov);
-    return st_elementov;
 }
 
 void izpisi_seznam(void){
